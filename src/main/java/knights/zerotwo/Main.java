@@ -1,5 +1,18 @@
 package knights.zerotwo;
 
+import knights.zerotwo.IWrap.WrapResult;
+import knights.zerotwo.modules.*;
+import net.dv8tion.jda.core.AccountType;
+import net.dv8tion.jda.core.JDABuilder;
+import net.dv8tion.jda.core.entities.Role;
+import net.dv8tion.jda.core.events.ReadyEvent;
+import net.dv8tion.jda.core.events.guild.member.GuildMemberJoinEvent;
+import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.core.hooks.ListenerAdapter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.security.auth.login.LoginException;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -9,29 +22,6 @@ import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
-
-import javax.security.auth.login.LoginException;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import knights.zerotwo.IWrap.WrapResult;
-import knights.zerotwo.modules.Clap;
-import knights.zerotwo.modules.Crosspost;
-import knights.zerotwo.modules.Cube;
-import knights.zerotwo.modules.CustomEmotes;
-import knights.zerotwo.modules.Desu;
-import knights.zerotwo.modules.EmoteConfig;
-import knights.zerotwo.modules.Ping;
-import knights.zerotwo.modules.Roll;
-import knights.zerotwo.modules.Vouch;
-import net.dv8tion.jda.core.AccountType;
-import net.dv8tion.jda.core.JDABuilder;
-import net.dv8tion.jda.core.entities.Role;
-import net.dv8tion.jda.core.events.ReadyEvent;
-import net.dv8tion.jda.core.events.guild.member.GuildMemberJoinEvent;
-import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
-import net.dv8tion.jda.core.hooks.ListenerAdapter;
 
 public class Main extends ListenerAdapter {
     private static final Logger logger = LoggerFactory.getLogger(Main.class);
@@ -53,12 +43,12 @@ public class Main extends ListenerAdapter {
     private Main() {
         passiveModules = Arrays.asList(new Desu());
         activeModules = Arrays.asList(new Ping(), new Crosspost(), new Clap(), new Roll(),
-                new Cube(), new EmoteConfig(), new Vouch());
+                new Cube(), new EmoteConfig(), new Vouch(), new Mock());
         wrapperModules = Arrays.asList(new CustomEmotes());
     }
 
     private static final ThreadPoolExecutor exec = new ThreadPoolExecutor(1, 1, 0,
-            TimeUnit.MILLISECONDS, new ArrayBlockingQueue<Runnable>(3, true));
+            TimeUnit.MILLISECONDS, new ArrayBlockingQueue<>(3, true));
 
     @Override
     public void onReady(ReadyEvent event) {
