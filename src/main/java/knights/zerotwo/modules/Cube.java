@@ -2,6 +2,7 @@ package knights.zerotwo.modules;
 
 import javax.annotation.Nonnull;
 
+import com.vdurmont.emoji.EmojiManager;
 import knights.zerotwo.IActive;
 import knights.zerotwo.Utils;
 import net.dv8tion.jda.core.entities.Guild;
