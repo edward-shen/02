@@ -44,7 +44,8 @@ public class Main extends ListenerAdapter {
     private Main() {
         passiveModules = Arrays.asList(new Desu());
         activeModules = Arrays.asList(new Ping(), new Crosspost(), new Clap(), new Roll(),
-                new Cube(), new EmoteConfig(), new Vouch(), new Mock(), new Source(), new ListEmotes());
+                new Cube(), new EmoteConfig(), new Vouch(), new Mock(), new Source(),
+                new ListEmotes());
         wrapperModules = Arrays.asList(new CustomEmotes());
     }
 
@@ -74,24 +75,26 @@ public class Main extends ListenerAdapter {
         Optional<IActive> active = activeModules.stream().filter(m -> m.test(event)).findAny();
         Optional<IWrap> wrapper = wrapperModules.stream().filter(m -> m.test(event)).findAny();
 
-        try {
-            exec.submit(() -> {
-                try {
-                    passive.forEach(p -> p.apply(event));
-                    if (wrapper.isPresent()) {
-                        WrapResult result = wrapper.get().preAction(event);
-                        active.orElse(result.defaultActive).apply(event, result.content);
-                        wrapper.get().postAction(event);
-                    } else if (active.isPresent()) {
-                        active.get().apply(event, event.getMessage().getContentRaw());
+        if (passive.size() + (active.isPresent() ? 1 : 0) + (wrapper.isPresent() ? 1 : 0) > 0) {
+            try {
+                exec.submit(() -> {
+                    try {
+                        passive.forEach(p -> p.apply(event));
+                        if (wrapper.isPresent()) {
+                            WrapResult result = wrapper.get().preAction(event);
+                            active.orElse(result.defaultActive).apply(event, result.content);
+                            wrapper.get().postAction(event);
+                        } else if (active.isPresent()) {
+                            active.get().apply(event, event.getMessage().getContentRaw());
+                        }
+                    } catch (Exception e) {
+                        logger.error("Bot error", e);
                     }
-                } catch (Exception e) {
-                    logger.error("Bot error", e);
-                }
-            });
-        } catch (RejectedExecutionException e) {
-            logger.warn("Overloaded queue", e);
-            event.getChannel().sendMessage("Too many commands @.@").queue();
+                });
+            } catch (RejectedExecutionException e) {
+                logger.warn("Overloaded queue", e);
+                // event.getChannel().sendMessage("Too many commands @.@").queue();
+            }
         }
     }
 

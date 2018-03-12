@@ -1,23 +1,28 @@
 package knights.zerotwo.modules;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import javax.annotation.Nonnull;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import knights.zerotwo.IActive;
 import knights.zerotwo.IWrap;
 import knights.zerotwo.Utils;
 import net.dv8tion.jda.core.entities.Emote;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Icon;
-import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import javax.annotation.Nonnull;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import net.dv8tion.jda.core.requests.RequestFuture;
 
 public class CustomEmotes implements IWrap {
     static class CustomEmoteDefaultAction implements IActive {
@@ -64,7 +69,6 @@ public class CustomEmotes implements IWrap {
     }
 
     private List<Emote> emotesPendingDeletion = new ArrayList<>();
-    List<Message> messsagesPendingDeletion = new ArrayList<>();
 
     @Override
     public WrapResult preAction(MessageReceivedEvent event) {
@@ -94,17 +98,48 @@ public class CustomEmotes implements IWrap {
             InputStream img = this.getClass()
                     .getResourceAsStream("/custom-emotes/" + emote + ".png");
             if (img != null) {
+                logger.debug("Uploading {}", emote);
+                Icon icon = null;
                 try {
-                    logger.debug("Uploading {}", emote);
-                    Emote result = event.getGuild().getController()
-                            .createEmote(emote, Icon.from(img)).complete();
+                    icon = Icon.from(img);
+                } catch (IOException e1) {
+                    logger.error("Failed to load image???", e1);
+                    m.appendReplacement(sb, m.group());
+                    continue;
+                }
+                RequestFuture<Emote> req = event.getGuild().getController().createEmote(emote, icon)
+                        .submit();
+                try {
+                    // Mfw can't just req.orTimeout
+                    Emote result = CompletableFuture.supplyAsync(() -> {
+                        try {
+                            return req.get();
+                        } catch (Exception e) {
+                            logger.error("Emote error", e);
+                            return null;
+                        }
+                    }).orTimeout(3, TimeUnit.SECONDS).get();
+                    if (emote == null) {
+                        throw new Exception("Emote failed to upload");
+                    }
 
                     m.appendReplacement(sb, result.getAsMention());
 
                     emotesPendingDeletion.add(result);
                     replaced = true;
-                } catch (IOException e) {
+                } catch (Exception e) {
                     logger.error("Failed to upload", e);
+                    req.cancel(true);
+                    m.appendReplacement(sb, m.group());
+
+                    if (e.getCause() instanceof TimeoutException) {
+                        event.getChannel()
+                                .sendMessage(
+                                        "N-nani?? Emote upload timed out")
+                                .queue();
+                    }
+
+                    break;
                 }
             } else {
                 List<Emote> emotes1 = event.getGuild().getEmotesByName(emote, false);
@@ -131,7 +166,7 @@ public class CustomEmotes implements IWrap {
     @Override
     public void postAction(MessageReceivedEvent event) {
         logger.debug("Clean up emotes");
-        emotesPendingDeletion.forEach(emote -> emote.delete().queue());
+        emotesPendingDeletion.forEach(emote -> emote.delete().complete());
         emotesPendingDeletion.clear();
     }
 

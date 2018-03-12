@@ -25,24 +25,14 @@ public class Roll implements IActive {
             return;
         }
 
-        String content = messageContent.substring(sublen);
+        String diceParam = messageContent.substring(sublen);
         Random rnd = new Random();
 
-        String[] params = content.split(" ");
-
         int sum = 0;
-        String diceParam;
-
-        if (params.length == 0) {
-            diceParam = "1d6";
-        } else {
-            diceParam = params[1];
-        }
 
         List<String> diceRolls = Arrays.asList(diceParam.split("\\+"));
 
         for (String dice : diceRolls) {
-            System.out.println(dice);
             String[] diceParams = dice.split("d");
 
             if (Utils.isInteger(dice)) {
