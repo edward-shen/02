@@ -12,7 +12,7 @@ public class Utils {
     public static final Map<String, Set<String>> NEW_USERS = new HashMap<>();
     public static final String ROLE_ID = "421091128645779467";
     public static final String VOUCH_CHANNEL = "422314122428940288";
-    public static final int VOUCH_LIMIT = 3;
+    public static final int VOUCH_LIMIT = 2;
 
     public static final String PREFIX = "!";
 
