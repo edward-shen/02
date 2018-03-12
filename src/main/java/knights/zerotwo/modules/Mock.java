@@ -2,6 +2,7 @@ package knights.zerotwo.modules;
 
 import knights.zerotwo.IActive;
 import knights.zerotwo.Utils;
+import net.dv8tion.jda.core.MessageBuilder;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
 public class Mock implements IActive {
@@ -22,7 +23,10 @@ public class Mock implements IActive {
                 mesToMock[i] = Character.toUpperCase(mesToMock[i]); //capitalize
             }
 
-            event.getChannel().sendMessage(new String(mesToMock)).queue();
+            event.getChannel().sendFile(
+                    Mock.class.getResourceAsStream("/mock/spongebob.jpg"),
+                    "spongemock.jpg",
+                    new MessageBuilder(new String(mesToMock)).build()).queue();
         });
 
     }
