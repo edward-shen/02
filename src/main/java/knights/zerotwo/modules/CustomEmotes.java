@@ -73,6 +73,7 @@ public class CustomEmotes implements IWrap {
         Matcher m = EMOTES.matcher(raw);
 
         StringBuilder sb = new StringBuilder();
+        boolean replaced = false;
         while (m.find()) {
             int start = m.start();
             if (start > 0 && raw.charAt(start - 1) == '<') {
@@ -101,6 +102,7 @@ public class CustomEmotes implements IWrap {
                     m.appendReplacement(sb, result.getAsMention());
 
                     emotesPendingDeletion.add(result);
+                    replaced = true;
                 } catch (IOException e) {
                     logger.error("Failed to upload", e);
                 }
@@ -114,7 +116,9 @@ public class CustomEmotes implements IWrap {
         m.appendTail(sb);
 
         logger.debug("Finished emote replacement");
-        if (sb.length() < 2000) {
+        if (!replaced) {
+            return new WrapResult(event.getMessage().getContentRaw(), NULL_ACTIVE);
+        } else if (sb.length() < 2000) {
             return new WrapResult(sb.toString(), DEFAULT_ACTIVE);
         } else {
             event.getChannel()
