@@ -37,7 +37,7 @@ public class ListEmotes implements IActive {
         event.getChannel().sendMessage(
                 new EmbedBuilder()
                         .setTitle("Github")
-                        .setDescription("[Please click here for a list of commands!](https://github.com/edward-shen/02/tree/master/src/main/resources/custom-emotes)")
+                        .setDescription("[Please click here for a list of emotes!](https://github.com/edward-shen/02/tree/master/src/main/resources/custom-emotes)")
                         .setThumbnail("https://raw.githubusercontent.com/edward-shen/02/master/src/main/resources/02.jpg")
                         .build()).queue();
     }
