@@ -1,16 +1,14 @@
 package knights.zerotwo.modules;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-
 import knights.zerotwo.IPassive;
 import net.dv8tion.jda.core.MessageBuilder;
-import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageChannel;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.core.requests.restaction.MessageAction;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 public class Desu implements IPassive {
 
@@ -21,8 +19,8 @@ public class Desu implements IPassive {
     private static List<RandomEvent> messageList = new ArrayList<>();
 
     static {
-        messageList.add(channel -> channel.sendMessage(new MessageBuilder("です。").build()));
-        messageList.add(channel -> channel.sendMessage(new MessageBuilder("desu.").build()));
+        messageList.add(channel -> channel.sendMessage("です。"));
+        messageList.add(channel -> channel.sendMessage("desu."));
         // @formatter:off
         messageList.add(channel -> channel.sendMessage(new MessageBuilder().appendCodeBlock(
                         "ででででででででででで　　　　　　すす\n" +

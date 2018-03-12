@@ -43,7 +43,7 @@ public class Main extends ListenerAdapter {
     private Main() {
         passiveModules = Arrays.asList(new Desu());
         activeModules = Arrays.asList(new Ping(), new Crosspost(), new Clap(), new Roll(),
-                new Cube(), new EmoteConfig(), new Vouch(), new Mock());
+                new Cube(), new EmoteConfig(), new Vouch(), new Mock(), new Source());
         wrapperModules = Arrays.asList(new CustomEmotes());
     }
 
