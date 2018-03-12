@@ -1,23 +1,24 @@
 package knights.zerotwo.modules;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
-
 import knights.zerotwo.IActive;
 import knights.zerotwo.Utils;
 import net.dv8tion.jda.core.MessageBuilder;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
+import javax.annotation.Nonnull;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Random;
+
 public class Roll implements IActive {
 
     @Override
-    public boolean test(MessageReceivedEvent event) {
+    public boolean test(@Nonnull MessageReceivedEvent event) {
         return Utils.isCommand(event, "roll");
     }
 
     @Override
-    public void apply(MessageReceivedEvent event, String messageContent) {
+    public void apply(@Nonnull MessageReceivedEvent event, @Nonnull String messageContent) {
         int sublen = "roll".length() + Utils.PREFIX.length() + 1;
         if (messageContent.length() < sublen) {
             event.getChannel().sendMessage("Baka, there are no dice to roll").queue();

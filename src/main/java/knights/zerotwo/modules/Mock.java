@@ -5,14 +5,16 @@ import knights.zerotwo.Utils;
 import net.dv8tion.jda.core.MessageBuilder;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
+import javax.annotation.Nonnull;
+
 public class Mock implements IActive {
     @Override
-    public boolean test(MessageReceivedEvent event) {
+    public boolean test(@Nonnull MessageReceivedEvent event) {
         return Utils.isCommand(event, "mock");
     }
 
     @Override
-    public void apply(MessageReceivedEvent event, String messageContent) {
+    public void apply(@Nonnull MessageReceivedEvent event, @Nonnull String messageContent) {
         event.getChannel().getHistoryBefore(event.getMessage(), 1).queue(messageHistory -> {
             char[] mesToMock = messageHistory.getRetrievedHistory().get(0).getContentRaw().toLowerCase().toCharArray();
 

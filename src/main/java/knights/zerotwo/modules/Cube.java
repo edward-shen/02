@@ -1,22 +1,21 @@
 package knights.zerotwo.modules;
 
-import javax.annotation.Nonnull;
-
-import com.vdurmont.emoji.EmojiManager;
 import knights.zerotwo.IActive;
 import knights.zerotwo.Utils;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
+import javax.annotation.Nonnull;
+
 public class Cube implements IActive {
 
     @Override
-    public boolean test(MessageReceivedEvent event) {
+    public boolean test(@Nonnull MessageReceivedEvent event) {
         return Utils.isCommand(event, "cube");
     }
 
     @Override
-    public void apply(MessageReceivedEvent event, String messageContent) {
+    public void apply(@Nonnull MessageReceivedEvent event, @Nonnull String messageContent) {
         int sublen = "cube".length() + Utils.PREFIX.length() + 1;
         if (messageContent.length() < sublen) {
             event.getChannel().sendMessage("What do you want to cube?").complete();

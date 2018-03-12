@@ -1,15 +1,5 @@
 package knights.zerotwo.modules;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import knights.zerotwo.IActive;
 import knights.zerotwo.IWrap;
 import knights.zerotwo.Utils;
@@ -18,16 +8,26 @@ import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Icon;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.annotation.Nonnull;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class CustomEmotes implements IWrap {
     static class CustomEmoteDefaultAction implements IActive {
         @Override
-        public boolean test(MessageReceivedEvent event) {
+        public boolean test(@Nonnull MessageReceivedEvent event) {
             return false;
         }
 
         @Override
-        public void apply(MessageReceivedEvent event, String messageContent) {
+        public void apply(@Nonnull MessageReceivedEvent event, @Nonnull String messageContent) {
             Guild guild = event.getGuild();
 
             logger.debug("Sending message");
@@ -48,7 +48,7 @@ public class CustomEmotes implements IWrap {
     private static final IActive DEFAULT_ACTIVE = new CustomEmoteDefaultAction();
 
     @Override
-    public boolean test(MessageReceivedEvent event) {
+    public boolean test(@Nonnull MessageReceivedEvent event) {
         if (Utils.NON_EMOTE_USERS.contains(event.getAuthor().getId())) {
             return false;
         }

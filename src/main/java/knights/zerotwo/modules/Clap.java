@@ -1,21 +1,22 @@
 package knights.zerotwo.modules;
 
 import com.vdurmont.emoji.EmojiManager;
-
 import knights.zerotwo.IActive;
 import knights.zerotwo.Utils;
 import net.dv8tion.jda.core.entities.Message.MentionType;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
+import javax.annotation.Nonnull;
+
 public class Clap implements IActive {
 
     @Override
-    public boolean test(MessageReceivedEvent event) {
+    public boolean test(@Nonnull MessageReceivedEvent event) {
         return Utils.isCommand(event, "clap");
     }
 
     @Override
-    public void apply(MessageReceivedEvent event, String messageContent) {
+    public void apply(@Nonnull MessageReceivedEvent event, @Nonnull String messageContent) {
         int sublen = "clap".length() + Utils.PREFIX.length() + 1;
         if (messageContent.length() < sublen) {
             event.getChannel().sendMessage(

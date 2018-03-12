@@ -12,6 +12,7 @@ import net.dv8tion.jda.core.hooks.ListenerAdapter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.annotation.Nonnull;
 import javax.security.auth.login.LoginException;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -51,12 +52,12 @@ public class Main extends ListenerAdapter {
             TimeUnit.MILLISECONDS, new ArrayBlockingQueue<>(3, true));
 
     @Override
-    public void onReady(ReadyEvent event) {
+    public void onReady(@Nonnull ReadyEvent event) {
         logger.info("Ready, id={}", event.getJDA().getSelfUser().getId());
     }
 
     @Override
-    public void onMessageReceived(MessageReceivedEvent event) {
+    public void onMessageReceived(@Nonnull MessageReceivedEvent event) {
         // We don't want to reply to bots, sorry :P
         if (event.getAuthor().isBot()) {
             return;
@@ -95,7 +96,7 @@ public class Main extends ListenerAdapter {
     }
 
     @Override
-    public void onGuildMemberJoin(GuildMemberJoinEvent event) {
+    public void onGuildMemberJoin(@Nonnull GuildMemberJoinEvent event) {
         Utils.NEW_USERS.put(event.getUser().getId(), new HashSet<>());
         event.getGuild().getTextChannelById(Utils.VOUCH_CHANNEL)
                 .sendMessage(

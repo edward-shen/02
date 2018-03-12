@@ -1,24 +1,25 @@
 package knights.zerotwo.modules;
 
-import java.util.HashSet;
-import java.util.Set;
-import java.util.regex.Matcher;
-
 import knights.zerotwo.IActive;
 import knights.zerotwo.Utils;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.Message.MentionType;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
+import javax.annotation.Nonnull;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.regex.Matcher;
+
 public class Vouch implements IActive {
 
     @Override
-    public boolean test(MessageReceivedEvent event) {
+    public boolean test(@Nonnull MessageReceivedEvent event) {
         return Utils.isCommand(event, "vouch");
     }
 
     @Override
-    public void apply(MessageReceivedEvent event, String messageContent) {
+    public void apply(@Nonnull MessageReceivedEvent event, @Nonnull String messageContent) {
         Matcher m = MentionType.USER.getPattern().matcher(messageContent);
         if (!m.find()) {
             event.getChannel().sendMessage("Who are you vouching for?").queue();
