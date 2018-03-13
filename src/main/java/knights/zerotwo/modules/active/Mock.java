@@ -1,4 +1,4 @@
-package knights.zerotwo.modules;
+package knights.zerotwo.modules.active;
 
 import knights.zerotwo.IActive;
 import knights.zerotwo.Utils;

@@ -1,7 +1,9 @@
 package knights.zerotwo;
 
 import knights.zerotwo.IWrap.WrapResult;
-import knights.zerotwo.modules.*;
+import knights.zerotwo.modules.active.*;
+import knights.zerotwo.modules.passive.Desu;
+import knights.zerotwo.modules.wrapper.CustomEmotes;
 import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDABuilder;
 import net.dv8tion.jda.core.entities.Role;
@@ -45,7 +47,7 @@ public class Main extends ListenerAdapter {
         passiveModules = Arrays.asList(new Desu());
         activeModules = Arrays.asList(new Ping(), new Crosspost(), new Clap(), new Roll(),
                 new Cube(), new EmoteConfig(), new Vouch(), new Mock(), new Source(),
-                new ListEmotes());
+                new ListEmotes(), new Bug());
         wrapperModules = Arrays.asList(new CustomEmotes());
     }
 
