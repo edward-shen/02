@@ -24,12 +24,12 @@ public class Clap implements IActive {
                     .queue();
             return;
         }
-        String command = messageContent.substring(sublen);
+
+        String command = messageContent.substring(sublen).trim();
         String[] args = command.replaceAll("\\s+", " ").split(" ");
         String emote = args[0];
         int startIndex = 1;
-        if (!EmojiManager.isEmoji(emote)
-                && !MentionType.EMOTE.getPattern().matcher(emote).matches()) {
+        if (!EmojiManager.isEmoji(emote) && !MentionType.EMOTE.getPattern().matcher(emote).matches()) {
             startIndex = 0;
             emote = ":clap:";
         }
