@@ -6,6 +6,7 @@ import knights.zerotwo.modules.passive.Desu;
 import knights.zerotwo.modules.wrapper.CustomEmotes;
 import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDABuilder;
+import net.dv8tion.jda.core.entities.Game;
 import net.dv8tion.jda.core.entities.Role;
 import net.dv8tion.jda.core.events.ReadyEvent;
 import net.dv8tion.jda.core.events.guild.member.GuildMemberJoinEvent;
@@ -49,6 +50,7 @@ public class Main extends ListenerAdapter {
                 new Cube(), new EmoteConfig(), new Vouch(), new Mock(), new Source(),
                 new ListEmotes(), new Bug());
         wrapperModules = Arrays.asList(new CustomEmotes());
+
     }
 
     private static final ThreadPoolExecutor exec = new ThreadPoolExecutor(1, 1, 0,
@@ -57,6 +59,7 @@ public class Main extends ListenerAdapter {
     @Override
     public void onReady(@Nonnull ReadyEvent event) {
         logger.info("Ready, id={}", event.getJDA().getSelfUser().getId());
+        event.getJDA().getPresence().setPresence(Game.playing("with my darling~ ❤"), false);
     }
 
     @Override
