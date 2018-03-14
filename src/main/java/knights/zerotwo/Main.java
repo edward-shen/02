@@ -85,13 +85,14 @@ public class Main extends ListenerAdapter {
                 exec.submit(() -> {
                     try {
                         passive.forEach(p -> p.apply(event));
-                        if (wrapper.isPresent()) {
-                            WrapResult result = wrapper.get().preAction(event);
+
+                        wrapper.ifPresent(iWrap -> {
+                            WrapResult result = iWrap.preAction(event);
                             active.orElse(result.defaultActive).apply(event, result.content);
-                            wrapper.get().postAction(event);
-                        } else if (active.isPresent()) {
-                            active.get().apply(event, event.getMessage().getContentRaw());
-                        }
+                            iWrap.postAction(event);
+                        });
+
+                        active.ifPresent(iActive -> iActive.apply(event, event.getMessage().getContentRaw()));
                     } catch (Exception e) {
                         logger.error("Bot error", e);
                     }
