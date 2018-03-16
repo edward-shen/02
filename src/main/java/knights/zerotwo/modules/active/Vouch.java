@@ -20,6 +20,12 @@ public class Vouch implements IActive {
 
     @Override
     public void apply(@Nonnull MessageReceivedEvent event, @Nonnull String messageContent) {
+
+        if (!event.getMember().getRoles().contains(event.getGuild().getRoleById(Utils.ROLE_ID))) {
+            event.getChannel().sendMessage("You don't have permissions to vouch!").queue();
+            return;
+        }
+
         Matcher m = MentionType.USER.getPattern().matcher(messageContent);
         if (!m.find()) {
             event.getChannel().sendMessage("Who are you vouching for?").queue();
@@ -42,6 +48,12 @@ public class Vouch implements IActive {
         }
         Set<String> people = Utils.NEW_USERS.get(id);
         people.add(event.getAuthor().getId());
+
+        if (people.contains(event.getAuthor().getId())) {
+            event.getChannel().sendMessage("You already vouched for this person!").queue();
+            return;
+        }
+
         if (people.size() < Utils.VOUCH_LIMIT) {
             event.getChannel()
                     .sendMessage(event.getAuthor().getAsMention() + " vouched for " + m.group())

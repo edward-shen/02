@@ -30,7 +30,7 @@ public class Mock implements IActive {
             event.getChannel().sendFile(
                     Mock.class.getResourceAsStream("/mock/spongebob.jpg"),
                     "spongemock.jpg",
-                    new MessageBuilder((mockMessage.getAuthor().isBot() ? "" : mockMessage.getAuthor().getAsMention() + ": ") + new String(mesToMock)).build()).queue();
+                    new MessageBuilder((mockMessage.getAuthor().isBot() ? "" : mockMessage.getAuthor().getName() + ": ") + new String(mesToMock)).build()).queue();
         });
 
     }
