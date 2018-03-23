@@ -11,7 +11,7 @@ import net.dv8tion.jda.core.requests.RequestFuture;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.annotation.Nonnull;
+import javax.annotation.ParametersAreNonnullByDefault;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -22,15 +22,16 @@ import java.util.concurrent.TimeoutException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+@ParametersAreNonnullByDefault
 public class CustomEmotes implements IWrap {
     static class CustomEmoteDefaultAction implements IActive {
         @Override
-        public boolean test(@Nonnull MessageReceivedEvent event) {
+        public boolean test(MessageReceivedEvent event) {
             return false;
         }
 
         @Override
-        public void apply(@Nonnull MessageReceivedEvent event, @Nonnull String messageContent) {
+        public void apply(MessageReceivedEvent event, String messageContent) {
             Guild guild = event.getGuild();
 
             logger.debug("Sending message");
@@ -51,7 +52,7 @@ public class CustomEmotes implements IWrap {
     private static final IActive DEFAULT_ACTIVE = new CustomEmoteDefaultAction();
 
     @Override
-    public boolean test(@Nonnull MessageReceivedEvent event) {
+    public boolean test(MessageReceivedEvent event) {
         if (Utils.NON_EMOTE_USERS.contains(event.getAuthor().getId())) {
             return false;
         }

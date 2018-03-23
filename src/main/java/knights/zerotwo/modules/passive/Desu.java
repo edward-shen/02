@@ -6,11 +6,12 @@ import net.dv8tion.jda.core.entities.MessageChannel;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.core.requests.restaction.MessageAction;
 
-import javax.annotation.Nonnull;
+import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+@ParametersAreNonnullByDefault
 public class Desu implements IPassive {
 
     private interface RandomEvent {
@@ -24,7 +25,7 @@ public class Desu implements IPassive {
         messageList.add(channel -> channel.sendMessage("desu."));
         // @formatter:off
         messageList.add(channel -> channel.sendMessage(new MessageBuilder().appendCodeBlock(
-                        "ででででででででででで　　　　　　すす\n" +
+                "ででででででででででで　　　　　　すす\n" +
                         "　　　　　ででで　　　　　すすすすすすすすす\n" +
                         "　　　　でで　　でで　　　　　　すす\n" +
                         "　　　でで　　　でで　　　　　すすす\n" +
@@ -42,12 +43,12 @@ public class Desu implements IPassive {
     }
 
     @Override
-    public boolean test(@Nonnull MessageReceivedEvent event) {
+    public boolean test(MessageReceivedEvent event) {
         return event.getMessage().getContentRaw().endsWith("desu");
     }
 
     @Override
-    public void apply(@Nonnull MessageReceivedEvent event) {
+    public void apply(MessageReceivedEvent event) {
         final float chance = 0.1f;
 
         if (Math.random() < chance) {

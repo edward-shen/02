@@ -4,17 +4,18 @@ import knights.zerotwo.IActive;
 import knights.zerotwo.Utils;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
-import javax.annotation.Nonnull;
+import javax.annotation.ParametersAreNonnullByDefault;
 
+@ParametersAreNonnullByDefault
 public class Ping implements IActive {
 
     @Override
-    public boolean test(@Nonnull MessageReceivedEvent event) {
+    public boolean test(MessageReceivedEvent event) {
         return Utils.isCommand(event, "ping");
     }
 
     @Override
-    public void apply(@Nonnull MessageReceivedEvent event, @Nonnull String content) {
+    public void apply(MessageReceivedEvent event, String content) {
         event.getChannel().sendMessage("pong!").queue();
     }
 

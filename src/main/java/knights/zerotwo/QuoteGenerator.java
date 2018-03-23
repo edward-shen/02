@@ -3,6 +3,7 @@ package knights.zerotwo;
 import com.google.gson.Gson;
 import org.slf4j.LoggerFactory;
 
+import javax.annotation.ParametersAreNonnullByDefault;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -11,25 +12,50 @@ import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
 
+@ParametersAreNonnullByDefault
 public class QuoteGenerator {
     private static final org.slf4j.Logger logger = LoggerFactory.getLogger(Main.class);
     private static final Random rnd = new Random();
 
     private List<String> db;
 
-    public QuoteGenerator(String dbLocation) {
-        String location = "/quotes/" + dbLocation + ".json";
+    /**
+     * Takes in a class reference and automatically generates the respective quote resource.
+     *
+     * @param c the class that needs its quote database to be initialized.
+     */
+    public QuoteGenerator(Class c) {
+        String packageName = c.getPackageName().substring(c.getPackageName().lastIndexOf(".") + 1);
+        String location = "/quotes/" + packageName + "/" + c.getSimpleName() + ".json";
         InputStream res = this.getClass().getResourceAsStream(location);
         if (res != null) {
             String output = new BufferedReader(new InputStreamReader(res)).lines().collect(Collectors.joining(""));
-            System.out.println(output);
             db = Arrays.asList(new Gson().fromJson(output, String[].class));
         } else {
-            logger.warn("Quote json file for " + dbLocation + " does not exist at location " + location);
+            logger.warn("Quote json file for " + c.getSimpleName() + " does not exist at location " + location);
         }
 
     }
 
+    /**
+     * Attempts to load a quote json array from the following location
+     *
+     * @param location the location of the json array file.
+     */
+    public QuoteGenerator(String location) {
+        InputStream res = this.getClass().getResourceAsStream("/quotes/" + location);
+        if (res != null) {
+            String output = new BufferedReader(new InputStreamReader(res)).lines().collect(Collectors.joining(""));
+            db = Arrays.asList(new Gson().fromJson(output, String[].class));
+        } else {
+            logger.warn("Quote json file does not exist at location " + location);
+        }
+    }
+
+    /**
+     * Returns a random quote in the list of quotes. If the database was unsuccessfully loaded, throw a warning
+     * and return an empty string.
+     */
     public String getQuote() {
         if (db == null) {
             logger.error("Tried to get a quote from a null list!");

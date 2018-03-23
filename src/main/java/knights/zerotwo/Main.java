@@ -15,7 +15,7 @@ import net.dv8tion.jda.core.hooks.ListenerAdapter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.annotation.Nonnull;
+import javax.annotation.ParametersAreNonnullByDefault;
 import javax.security.auth.login.LoginException;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -27,8 +27,13 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
+@ParametersAreNonnullByDefault
 public class Main extends ListenerAdapter {
     private static final Logger logger = LoggerFactory.getLogger(Main.class);
+    private List<IPassive> passiveModules;
+    private List<IActive> activeModules;
+    private List<IWrap> wrapperModules;
+
 
     public static void main(String[] args) {
         logger.info("Starting");
@@ -39,10 +44,6 @@ public class Main extends ListenerAdapter {
             logger.error("Login error", e);
         }
     }
-
-    private List<IPassive> passiveModules;
-    private List<IActive> activeModules;
-    private List<IWrap> wrapperModules;
 
     private Main() {
         passiveModules = Arrays.asList(new Desu());
@@ -57,13 +58,13 @@ public class Main extends ListenerAdapter {
             TimeUnit.MILLISECONDS, new ArrayBlockingQueue<>(3, true));
 
     @Override
-    public void onReady(@Nonnull ReadyEvent event) {
+    public void onReady(ReadyEvent event) {
         logger.info("Ready, id={}", event.getJDA().getSelfUser().getId());
         event.getJDA().getPresence().setPresence(Game.playing("with my darling~ ❤"), false);
     }
 
     @Override
-    public void onMessageReceived(@Nonnull MessageReceivedEvent event) {
+    public void onMessageReceived(MessageReceivedEvent event) {
         // We don't want to reply to bots, sorry :P
         if (event.getAuthor().isBot()) {
             return;
@@ -105,7 +106,7 @@ public class Main extends ListenerAdapter {
     }
 
     @Override
-    public void onGuildMemberJoin(@Nonnull GuildMemberJoinEvent event) {
+    public void onGuildMemberJoin(GuildMemberJoinEvent event) {
         Utils.NEW_USERS.put(event.getUser().getId(), new HashSet<>());
         event.getGuild().getTextChannelById(Utils.VOUCH_CHANNEL)
                 .sendMessage(

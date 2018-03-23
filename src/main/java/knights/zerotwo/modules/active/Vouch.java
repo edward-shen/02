@@ -6,20 +6,21 @@ import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.Message.MentionType;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
-import javax.annotation.Nonnull;
+import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.regex.Matcher;
 
+@ParametersAreNonnullByDefault
 public class Vouch implements IActive {
 
     @Override
-    public boolean test(@Nonnull MessageReceivedEvent event) {
+    public boolean test(MessageReceivedEvent event) {
         return Utils.isCommand(event, "vouch");
     }
 
     @Override
-    public void apply(@Nonnull MessageReceivedEvent event, @Nonnull String messageContent) {
+    public void apply(MessageReceivedEvent event, String messageContent) {
 
         if (!event.getMember().getRoles().contains(event.getGuild().getRoleById(Utils.ROLE_ID))) {
             event.getChannel().sendMessage("You don't have permissions to vouch!").queue();

@@ -5,8 +5,9 @@ import knights.zerotwo.Utils;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
-import javax.annotation.Nonnull;
+import javax.annotation.ParametersAreNonnullByDefault;
 
+@ParametersAreNonnullByDefault
 public class ListEmotes implements IActive {
 
     /*
@@ -35,7 +36,7 @@ public class ListEmotes implements IActive {
      */
 
     @Override
-    public void apply(@Nonnull MessageReceivedEvent event, @Nonnull String messageContent) {
+    public void apply(MessageReceivedEvent event, String messageContent) {
         event.getChannel().sendMessage(
                 new EmbedBuilder()
                         .setTitle("Github")
@@ -45,7 +46,7 @@ public class ListEmotes implements IActive {
     }
 
     @Override
-    public boolean test(@Nonnull MessageReceivedEvent event) {
+    public boolean test(MessageReceivedEvent event) {
         return Utils.isCommand(event, "listemotes");
     }
 }

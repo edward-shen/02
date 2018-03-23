@@ -1,30 +1,26 @@
 package knights.zerotwo.modules.active;
 
-import java.io.UnsupportedEncodingException;
-import java.math.BigInteger;
-import java.util.regex.Pattern;
-
-import javax.annotation.Nonnull;
-
-import com.vdurmont.emoji.EmojiManager;
 import com.vdurmont.emoji.EmojiParser;
-
 import knights.zerotwo.IActive;
 import knights.zerotwo.Utils;
 import net.dv8tion.jda.core.entities.Message.MentionType;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
+import javax.annotation.ParametersAreNonnullByDefault;
+import java.util.regex.Pattern;
+
+@ParametersAreNonnullByDefault
 public class Clap implements IActive {
 
     @Override
-    public boolean test(@Nonnull MessageReceivedEvent event) {
+    public boolean test(MessageReceivedEvent event) {
         return Utils.isCommand(event, "clap");
     }
 
     private static final Pattern ascii = Pattern.compile("[a-zA-Z0-9]");
 
     @Override
-    public void apply(@Nonnull MessageReceivedEvent event, @Nonnull String messageContent) {
+    public void apply(MessageReceivedEvent event, String messageContent) {
         int sublen = "clap".length() + Utils.PREFIX.length() + 1;
         if (messageContent.length() < sublen) {
             event.getChannel().sendMessage(

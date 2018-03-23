@@ -5,20 +5,21 @@ import knights.zerotwo.Utils;
 import net.dv8tion.jda.core.entities.Message.MentionType;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
-import javax.annotation.Nonnull;
+import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.regex.Matcher;
 
+@ParametersAreNonnullByDefault
 public class Crosspost implements IActive {
 
     @Override
-    public boolean test(@Nonnull MessageReceivedEvent event) {
+    public boolean test(MessageReceivedEvent event) {
         return Utils.isCommand(event, "crosspost");
     }
 
     @Override
-    public void apply(@Nonnull MessageReceivedEvent event, @Nonnull String messageContent) {
+    public void apply(MessageReceivedEvent event, String messageContent) {
         int sublen = "crosspost".length() + Utils.PREFIX.length() + 1;
         if (messageContent.length() < sublen) {
             event.getChannel().sendMessage("Darling, what do you want me to crosspost~?").queue();

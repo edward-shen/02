@@ -5,17 +5,18 @@ import knights.zerotwo.Utils;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
-import javax.annotation.Nonnull;
+import javax.annotation.ParametersAreNonnullByDefault;
 
+@ParametersAreNonnullByDefault
 public class Cube implements IActive {
 
     @Override
-    public boolean test(@Nonnull MessageReceivedEvent event) {
+    public boolean test(MessageReceivedEvent event) {
         return Utils.isCommand(event, "cube");
     }
 
     @Override
-    public void apply(@Nonnull MessageReceivedEvent event, @Nonnull String messageContent) {
+    public void apply(MessageReceivedEvent event, String messageContent) {
         int sublen = "cube".length() + Utils.PREFIX.length() + 1;
         if (messageContent.length() < sublen) {
             event.getChannel().sendMessage("What do you want to cube?").complete();
@@ -53,8 +54,8 @@ public class Cube implements IActive {
         }
     }
 
-    private void drawBox(@Nonnull String str, boolean shouldRev, @Nonnull char[][] field, int x,
-            int y) {
+    private void drawBox(String str, boolean shouldRev, char[][] field, int x,
+                         int y) {
         int length = str.length();
         for (int i = 0; i < length; i++) {
             field[y + i][x] = str.charAt(i);
@@ -66,7 +67,7 @@ public class Cube implements IActive {
         }
     }
 
-    private void drawDiagonal(int length, @Nonnull char[][] field, int offset) {
+    private void drawDiagonal(int length, char[][] field, int offset) {
         for (int x = 1; x < offset; x++) {
             field[offset - x][x * 2] = '/';
             field[length - x + offset - 1][x * 2] = '/';
@@ -75,7 +76,7 @@ public class Cube implements IActive {
         }
     }
 
-    private String flattenMessage(@Nonnull char[][] field, int length) {
+    private String flattenMessage(char[][] field, int length) {
         StringBuilder output = new StringBuilder();
         for (int y = 0; y < field.length; y++) {
             StringBuilder line = new StringBuilder();
@@ -89,7 +90,7 @@ public class Cube implements IActive {
         return output.toString();
     }
 
-    private String rtrim(@Nonnull String s) {
+    private String rtrim(String s) {
         int i = s.length() - 1;
         while (i > 0 && Character.isWhitespace(s.charAt(i))) {
             i--;

@@ -6,16 +6,17 @@ import net.dv8tion.jda.core.MessageBuilder;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
-import javax.annotation.Nonnull;
+import javax.annotation.ParametersAreNonnullByDefault;
 
+@ParametersAreNonnullByDefault
 public class Mock implements IActive {
     @Override
-    public boolean test(@Nonnull MessageReceivedEvent event) {
+    public boolean test(MessageReceivedEvent event) {
         return Utils.isCommand(event, "mock");
     }
 
     @Override
-    public void apply(@Nonnull MessageReceivedEvent event, @Nonnull String messageContent) {
+    public void apply(MessageReceivedEvent event, String messageContent) {
         event.getChannel().getHistoryBefore(event.getMessage(), 1).queue(messageHistory -> {
             Message mockMessage = messageHistory.getRetrievedHistory().get(0);
             char[] mesToMock = mockMessage.getContentRaw().toLowerCase().toCharArray();
