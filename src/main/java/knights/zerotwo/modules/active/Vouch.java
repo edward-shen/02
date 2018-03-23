@@ -49,11 +49,6 @@ public class Vouch implements IActive {
         Set<String> people = Utils.NEW_USERS.get(id);
         people.add(event.getAuthor().getId());
 
-        if (people.contains(event.getAuthor().getId())) {
-            event.getChannel().sendMessage("You already vouched for this person!").queue();
-            return;
-        }
-
         if (people.size() < Utils.VOUCH_LIMIT) {
             event.getChannel()
                     .sendMessage(event.getAuthor().getAsMention() + " vouched for " + m.group())

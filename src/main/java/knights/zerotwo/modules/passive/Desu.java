@@ -38,6 +38,7 @@ public class Desu implements IPassive {
         messageList.add(channel -> channel.sendMessage(new MessageBuilder()
                 .setContent("https://www.youtube.com/watch?v=60mLvBWOMb4").build()));
         messageList.add(channel -> channel.sendFile(Desu.class.getResourceAsStream("/desu/desu.jpg"), "desu.jpg"));
+        messageList.add(channel -> channel.sendMessage("desu~"));
     }
 
     @Override
