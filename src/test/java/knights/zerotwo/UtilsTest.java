@@ -5,10 +5,10 @@ import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-public class UtilsTest {
+class UtilsTest {
 
     @Test
-    public void testIsCommand() {
+    void testIsCommand() {
         String commandName = "mock";
         String command = Utils.PREFIX + commandName;
         String invalidCommand = Utils.PREFIX + commandName.replace(commandName.charAt(0), (char) (command.charAt(0) + 1));
@@ -27,7 +27,7 @@ public class UtilsTest {
     }
 
     @Test
-    public void testIsInteger() {
+    void testIsInteger() {
         Assertions.assertTrue(Utils.isInteger("10"));
         Assertions.assertTrue(Utils.isInteger("-10"));
         Assertions.assertFalse(Utils.isInteger("1.0"));
