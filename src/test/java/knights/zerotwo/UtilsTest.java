@@ -25,4 +25,22 @@ public class UtilsTest {
         Assertions.assertFalse(Utils.isCommand(msgInvalid, command));
         Assertions.assertTrue(Utils.isCommand(msgUppercase, command));
     }
+
+    @Test
+    public void testIsInteger() {
+        Assertions.assertTrue(Utils.isInteger("10"));
+        Assertions.assertTrue(Utils.isInteger("-10"));
+        Assertions.assertFalse(Utils.isInteger("1.0"));
+        Assertions.assertFalse(Utils.isInteger("1.-0"));
+        Assertions.assertFalse(Utils.isInteger("1.4"));
+        Assertions.assertFalse(Utils.isInteger(""));
+        Assertions.assertFalse(Utils.isInteger("apple"));
+
+        Assertions.assertTrue(Utils.isInteger("ff", 16));
+        Assertions.assertFalse(Utils.isInteger("ff", 15));
+        Assertions.assertFalse(Utils.isInteger("g", 16));
+        Assertions.assertTrue(Utils.isInteger("-3fa42", 16));
+        Assertions.assertFalse(Utils.isInteger("-3fa42", 0));
+        Assertions.assertFalse(Utils.isInteger("-3fa42", -4));
+    }
 }

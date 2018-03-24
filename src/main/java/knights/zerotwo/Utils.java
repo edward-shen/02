@@ -23,10 +23,20 @@ public class Utils {
                 .startsWith(Utils.PREFIX + command);
     }
 
+    /**
+     * Check if a string is an integer in base 10.
+     *
+     * @param s The string to check.
+     */
     public static boolean isInteger(String s) {
         return isInteger(s, 10);
     }
 
+    /**
+     * Checks if an string is an integer in the specified radix.
+     * @param s The string to check.
+     * @param radix The radix our string is in.
+     */
     public static boolean isInteger(String s, int radix) {
         if (s.isEmpty())
             return false;

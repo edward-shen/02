@@ -11,6 +11,7 @@ import net.dv8tion.jda.core.entities.Role;
 import net.dv8tion.jda.core.events.ReadyEvent;
 import net.dv8tion.jda.core.events.guild.member.GuildMemberJoinEvent;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.core.events.message.react.MessageReactionAddEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,6 +34,7 @@ public class Main extends ListenerAdapter {
     private List<IPassive> passiveModules;
     private List<IActive> activeModules;
     private List<IWrap> wrapperModules;
+    private List<IReaction> reactionModules;
 
 
     public static void main(String[] args) {
@@ -51,6 +53,7 @@ public class Main extends ListenerAdapter {
                 new Cube(), new EmoteConfig(), new Mock(), new Source(),
                 new ListEmotes(), new Bug());
         wrapperModules = Arrays.asList(new CustomEmotes());
+        reactionModules = Arrays.asList();
 
     }
 
@@ -103,6 +106,16 @@ public class Main extends ListenerAdapter {
                 // event.getChannel().sendMessage("Too many commands @.@").queue();
             }
         }
+    }
+
+    @Override
+    public void onMessageReactionAdd(MessageReactionAddEvent event) {
+        reactionModules.forEach(module -> {
+            if (module.test(event)) {
+                module.apply(event);
+            }
+        });
+
     }
 
     @Override

@@ -14,8 +14,10 @@ import java.util.stream.Collectors;
 
 @ParametersAreNonnullByDefault
 public class QuoteGenerator {
-    private static final org.slf4j.Logger logger = LoggerFactory.getLogger(Main.class);
-    private static final Random rnd = new Random();
+    private static final org.slf4j.Logger LOGGER = LoggerFactory.getLogger(Main.class);
+    private static final Random RND = new Random();
+
+    public static final QuoteGenerator FAIL_QUOTES = new QuoteGenerator("fail");
 
     private List<String> db;
 
@@ -32,7 +34,7 @@ public class QuoteGenerator {
             String output = new BufferedReader(new InputStreamReader(res)).lines().collect(Collectors.joining(""));
             db = Arrays.asList(new Gson().fromJson(output, String[].class));
         } else {
-            logger.warn("Quote json file for " + c.getSimpleName() + " does not exist at location " + location);
+            LOGGER.warn("Quote json file for " + c.getSimpleName() + " does not exist at location " + location);
         }
 
     }
@@ -43,12 +45,12 @@ public class QuoteGenerator {
      * @param location the location of the json array file.
      */
     public QuoteGenerator(String location) {
-        InputStream res = this.getClass().getResourceAsStream("/quotes/" + location);
+        InputStream res = this.getClass().getResourceAsStream("/quotes/" + location + ".json");
         if (res != null) {
             String output = new BufferedReader(new InputStreamReader(res)).lines().collect(Collectors.joining(""));
             db = Arrays.asList(new Gson().fromJson(output, String[].class));
         } else {
-            logger.warn("Quote json file does not exist at location " + location);
+            LOGGER.warn("Quote json file does not exist at location " + location);
         }
     }
 
@@ -58,10 +60,10 @@ public class QuoteGenerator {
      */
     public String getQuote() {
         if (db == null) {
-            logger.error("Tried to get a quote from a null list!");
+            LOGGER.error("Tried to get a quote from a null list!");
             return "";
         }
 
-        return db.get(rnd.nextInt(db.size()));
+        return db.get(RND.nextInt(db.size()));
     }
 }

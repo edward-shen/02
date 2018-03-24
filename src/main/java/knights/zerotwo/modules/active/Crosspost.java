@@ -38,10 +38,10 @@ public class Crosspost implements IActive {
         String text = xpostCommand.substring(end);
         channelIds.remove(event.getChannel().getId());
         if (channelIds.isEmpty()) {
-            event.getChannel().sendMessage("I didn't find any channels to crosspost to").queue();
+            event.getChannel().sendMessage("I didn't find any channels to crosspost to!").queue();
             return;
         }
-        channelIds.stream().forEach(channelId -> event.getJDA().getTextChannelById(channelId)
+        channelIds.forEach(channelId -> event.getJDA().getTextChannelById(channelId)
                 .sendMessage(prefix + text).queue());
     }
 }
