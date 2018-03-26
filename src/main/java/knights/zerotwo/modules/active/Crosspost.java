@@ -12,30 +12,31 @@ import java.util.regex.Matcher;
 
 @ParametersAreNonnullByDefault
 public class Crosspost implements IActive {
+    private static final String COMMAND_KEYWORD = "crosspost";
 
     @Override
     public boolean test(MessageReceivedEvent event) {
-        return Utils.isCommand(event, "crosspost");
+        return Utils.isCommand(event, COMMAND_KEYWORD);
     }
 
     @Override
     public void apply(MessageReceivedEvent event, String messageContent) {
-        int sublen = "crosspost".length() + Utils.PREFIX.length() + 1;
-        if (messageContent.length() < sublen) {
+        String arguments = Utils.getCommandContent(COMMAND_KEYWORD, messageContent);
+        if (arguments.isEmpty()) {
             event.getChannel().sendMessage("Darling, what do you want me to crosspost~?").queue();
             return;
         }
-        String xpostCommand = messageContent.substring(sublen);
+
         String prefix = event.getMessage().getAuthor().getAsMention() + " crossposted from <#"
                 + event.getMessage().getChannel().getId() + ">:\n";
-        Matcher channelMatcher = MentionType.CHANNEL.getPattern().matcher(xpostCommand);
+        Matcher channelMatcher = MentionType.CHANNEL.getPattern().matcher(arguments);
         Set<String> channelIds = new HashSet<>();
         int end = 0;
         while (channelMatcher.find()) {
             channelIds.add(channelMatcher.group(1));
             end = channelMatcher.end();
         }
-        String text = xpostCommand.substring(end);
+        String text = arguments.substring(end);
         channelIds.remove(event.getChannel().getId());
         if (channelIds.isEmpty()) {
             event.getChannel().sendMessage("I didn't find any channels to crosspost to!").queue();

@@ -39,7 +39,7 @@ public class Clap implements IActive {
             emote = ":clap:";
         }
         if (args.length < startIndex + 2) {
-            event.getChannel().sendMessage("baka, you can't clap a single word!").queue();
+            event.getChannel().sendMessage("Baka, you can't clap a single word!").queue();
             return;
         }
         StringBuilder output = new StringBuilder();

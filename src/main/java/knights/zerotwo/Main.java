@@ -30,7 +30,7 @@ import java.util.stream.Collectors;
 
 @ParametersAreNonnullByDefault
 public class Main extends ListenerAdapter {
-    private static final Logger logger = LoggerFactory.getLogger(Main.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
     private List<IPassive> passiveModules;
     private List<IActive> activeModules;
     private List<IWrap> wrapperModules;
@@ -38,12 +38,12 @@ public class Main extends ListenerAdapter {
 
 
     public static void main(String[] args) {
-        logger.info("Starting");
+        LOGGER.info("Starting");
         try {
             new JDABuilder(AccountType.BOT).setToken(System.getenv("token"))
                     .addEventListener(new Main()).buildAsync();
         } catch (LoginException e) {
-            logger.error("Login error", e);
+            LOGGER.error("Login error", e);
         }
     }
 
@@ -62,7 +62,7 @@ public class Main extends ListenerAdapter {
 
     @Override
     public void onReady(ReadyEvent event) {
-        logger.info("Ready, id={}", event.getJDA().getSelfUser().getId());
+        LOGGER.info("Ready, id={}", event.getJDA().getSelfUser().getId());
         event.getJDA().getPresence().setPresence(Game.playing("with my darling~ ❤"), false);
     }
 
@@ -84,7 +84,7 @@ public class Main extends ListenerAdapter {
         Optional<IActive> active = activeModules.stream().filter(m -> m.test(event)).findAny();
         Optional<IWrap> wrapper = wrapperModules.stream().filter(m -> m.test(event)).findAny();
 
-        if (passive.size() + (active.isPresent() ? 1 : 0) + (wrapper.isPresent() ? 1 : 0) > 0) {
+        if (!passive.isEmpty() || active.isPresent() || wrapper.isPresent()) {
             try {
                 exec.submit(() -> {
                     try {
@@ -98,11 +98,11 @@ public class Main extends ListenerAdapter {
 
                         active.ifPresent(iActive -> iActive.apply(event, event.getMessage().getContentRaw()));
                     } catch (Exception e) {
-                        logger.error("Bot error", e);
+                        LOGGER.error("Bot error", e);
                     }
                 });
             } catch (RejectedExecutionException e) {
-                logger.warn("Overloaded queue", e);
+                LOGGER.warn("Overloaded queue", e);
                 // event.getChannel().sendMessage("Too many commands @.@").queue();
             }
         }

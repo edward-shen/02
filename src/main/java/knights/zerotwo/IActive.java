@@ -6,6 +6,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 @ParametersAreNonnullByDefault
 public interface IActive extends IMessageFilter {
+
     /**
      * Do something with the valid, captured event.
      *

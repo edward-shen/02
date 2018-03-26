@@ -4,6 +4,7 @@ import knights.zerotwo.IActive;
 import knights.zerotwo.Utils;
 import net.dv8tion.jda.core.MessageBuilder;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import org.jetbrains.annotations.Contract;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.Arrays;
@@ -13,25 +14,29 @@ import java.util.Random;
 @ParametersAreNonnullByDefault
 public class Roll implements IActive {
 
+    private static final String COMMAND_KEYWORD = "roll";
+    private static final int MAX_DICE_PER_TYPE = 64;
+    private static final int MAX_SIDE_PER_DICE = 100;
+
     @Override
+    @Contract(pure = true)
     public boolean test(MessageReceivedEvent event) {
-        return Utils.isCommand(event, "roll");
+        return Utils.isCommand(event, COMMAND_KEYWORD);
     }
 
     @Override
     public void apply(MessageReceivedEvent event, String messageContent) {
-        int sublen = "roll".length() + Utils.PREFIX.length() + 1;
-        if (messageContent.length() < sublen) {
-            event.getChannel().sendMessage("Baka, there are no dice to roll").queue();
+        String arguments = Utils.getCommandContent(COMMAND_KEYWORD, messageContent);
+
+        if (arguments.isEmpty()) {
+            event.getChannel().sendMessage("Baka, there are no dice to roll!").queue();
             return;
         }
 
-        String diceParam = messageContent.substring(sublen);
         Random rnd = new Random();
-
         int sum = 0;
 
-        List<String> diceRolls = Arrays.asList(diceParam.split("\\+"));
+        List<String> diceRolls = Arrays.asList(arguments.split("\\+"));
 
         for (String dice : diceRolls) {
             String[] diceParams = dice.split("d");
@@ -54,10 +59,10 @@ public class Roll implements IActive {
             } else if (numDice <= 0) {
                 event.getChannel().sendMessage("That's not a valid amount of dice").queue();
                 return;
-            } else if (numDice > 64) {
+            } else if (numDice > MAX_DICE_PER_TYPE) {
                 event.getChannel().sendMessage("Why do you need that many dice!?").queue();
                 return;
-            } else if (numSides > 100) {
+            } else if (numSides > MAX_SIDE_PER_DICE) {
                 event.getChannel().sendMessage("Wha... too many sides @.@").queue();
                 return;
             }
@@ -73,5 +78,6 @@ public class Roll implements IActive {
 
         event.getChannel().sendMessage(new MessageBuilder(String.valueOf(sum)).build()).queue();
     }
+
 
 }

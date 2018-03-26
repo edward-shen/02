@@ -9,7 +9,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 @ParametersAreNonnullByDefault
 public class Source implements IActive {
-    QuoteGenerator quoteGen = new QuoteGenerator(this.getClass());
+    private QuoteGenerator quoteGen = new QuoteGenerator(this.getClass());
 
     @Override
     public void apply(MessageReceivedEvent event, String messageContent) {

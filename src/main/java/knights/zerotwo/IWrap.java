@@ -1,13 +1,15 @@
 package knights.zerotwo;
 
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import org.jetbrains.annotations.Contract;
 
+import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 @ParametersAreNonnullByDefault
 
 public interface IWrap extends IMessageFilter {
-    public static class WrapResult {
+    class WrapResult {
         public final String content;
         public final IActive defaultActive;
 
@@ -17,14 +19,15 @@ public interface IWrap extends IMessageFilter {
         }
     }
 
-    static final IActive NULL_ACTIVE = new IActive() {
+    IActive NULL_ACTIVE = new IActive() {
         @Override
-        public boolean test(MessageReceivedEvent event) {
+        @Contract("_ -> false")
+        public boolean test(@Nullable MessageReceivedEvent event) {
             return false;
         }
 
         @Override
-        public void apply(MessageReceivedEvent event, String messageContent) {
+        public void apply(@Nullable MessageReceivedEvent event, @Nullable String messageContent) {
         }
     };
 

@@ -1,6 +1,7 @@
 package knights.zerotwo.modules.active;
 
 import knights.zerotwo.IActive;
+import knights.zerotwo.QuoteGenerator;
 import knights.zerotwo.Utils;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
@@ -8,9 +9,12 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 @ParametersAreNonnullByDefault
 public class Bug implements IActive {
+
+    private QuoteGenerator quoteGen = new QuoteGenerator(this.getClass());
+
     @Override
     public void apply(MessageReceivedEvent event, String messageContent) {
-        event.getChannel().sendMessage("Ugh, it's probably Dr. Franxx's fault. Go tell him here:\nhttps://github.com/edward-shen/02/issues/new").queue();
+        event.getChannel().sendMessage(quoteGen.getQuote() + "https://github.com/edward-shen/02/issues/new").queue();
     }
 
     @Override

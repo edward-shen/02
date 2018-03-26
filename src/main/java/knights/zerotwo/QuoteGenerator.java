@@ -1,6 +1,7 @@
 package knights.zerotwo;
 
 import com.google.gson.Gson;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -14,7 +15,7 @@ import java.util.stream.Collectors;
 
 @ParametersAreNonnullByDefault
 public class QuoteGenerator {
-    private static final org.slf4j.Logger LOGGER = LoggerFactory.getLogger(Main.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(QuoteGenerator.class);
     private static final Random RND = new Random();
 
     public static final QuoteGenerator FAIL_QUOTES = new QuoteGenerator("fail");
@@ -48,7 +49,12 @@ public class QuoteGenerator {
         InputStream res = this.getClass().getResourceAsStream("/quotes/" + location + ".json");
         if (res != null) {
             String output = new BufferedReader(new InputStreamReader(res)).lines().collect(Collectors.joining(""));
-            db = Arrays.asList(new Gson().fromJson(output, String[].class));
+            String[] parsed = new Gson().fromJson(output, String[].class);
+            if (parsed != null) {
+                db = Arrays.asList(parsed);
+            } else {
+                LOGGER.warn("Quote json file exists at " + location + ", but is empty!");
+            }
         } else {
             LOGGER.warn("Quote json file does not exist at location " + location);
         }
