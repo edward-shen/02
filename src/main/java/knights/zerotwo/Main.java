@@ -16,6 +16,7 @@ import net.dv8tion.jda.core.hooks.ListenerAdapter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.security.auth.login.LoginException;
 import java.util.Arrays;
@@ -61,13 +62,13 @@ public class Main extends ListenerAdapter {
             TimeUnit.MILLISECONDS, new ArrayBlockingQueue<>(3, true));
 
     @Override
-    public void onReady(ReadyEvent event) {
+    public void onReady(@Nonnull ReadyEvent event) {
         LOGGER.info("Ready, id={}", event.getJDA().getSelfUser().getId());
         event.getJDA().getPresence().setPresence(Game.playing("with my darling~ ❤"), false);
     }
 
     @Override
-    public void onMessageReceived(MessageReceivedEvent event) {
+    public void onMessageReceived(@Nonnull MessageReceivedEvent event) {
         // We don't want to reply to bots, sorry :P
         if (event.getAuthor().isBot()) {
             return;
@@ -109,7 +110,7 @@ public class Main extends ListenerAdapter {
     }
 
     @Override
-    public void onMessageReactionAdd(MessageReactionAddEvent event) {
+    public void onMessageReactionAdd(@Nonnull MessageReactionAddEvent event) {
         reactionModules.forEach(module -> {
             if (module.test(event)) {
                 module.apply(event);
@@ -119,7 +120,7 @@ public class Main extends ListenerAdapter {
     }
 
     @Override
-    public void onGuildMemberJoin(GuildMemberJoinEvent event) {
+    public void onGuildMemberJoin(@Nonnull GuildMemberJoinEvent event) {
         Utils.NEW_USERS.put(event.getUser().getId(), new HashSet<>());
         event.getGuild().getTextChannelById(Utils.VOUCH_CHANNEL)
                 .sendMessage(

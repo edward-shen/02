@@ -4,6 +4,7 @@ import net.dv8tion.jda.core.MessageBuilder;
 import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.events.message.react.MessageReactionAddEvent;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -34,7 +35,7 @@ public class LeftRightOnlyController implements IPaginationController {
         return event.getUser().isBot() && event.getUser().equals(event.getJDA().getSelfUser());
     }
 
-    public void sendMessage(TextChannel channel) {
+    public void sendMessage(@Nonnull TextChannel channel) {
         MessageBuilder msgBuilder = new MessageBuilder();
         msgBuilder.appendCodeBlock(pages.get(index).getPageText(), String.valueOf(index));
         channel.sendMessage(msgBuilder.build()).queue(success -> {

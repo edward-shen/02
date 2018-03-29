@@ -6,6 +6,7 @@ import knights.zerotwo.Utils;
 import net.dv8tion.jda.core.entities.Message.MentionType;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
+import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.regex.Pattern;
 
@@ -17,6 +18,7 @@ public class Clap implements IActive {
         return Utils.isCommand(event, "clap");
     }
 
+    @Nonnull
     private static final Pattern ascii = Pattern.compile("[a-zA-Z0-9]");
 
     @Override

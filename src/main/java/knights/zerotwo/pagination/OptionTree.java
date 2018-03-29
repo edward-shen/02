@@ -1,5 +1,6 @@
 package knights.zerotwo.pagination;
 
+import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.ArrayList;
 import java.util.List;
@@ -7,6 +8,7 @@ import java.util.List;
 @ParametersAreNonnullByDefault
 public class OptionTree {
 
+    @Nonnull
     private List<OptionTree> nextLocations = new ArrayList<>();
 
     private String description;
@@ -30,6 +32,7 @@ public class OptionTree {
         this.description = description;
     }
 
+    @Nonnull
     public List<OptionTree> getNextLocations() {
         return nextLocations;
     }

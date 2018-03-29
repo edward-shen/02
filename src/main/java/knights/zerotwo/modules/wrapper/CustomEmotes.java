@@ -11,6 +11,7 @@ import net.dv8tion.jda.core.requests.RequestFuture;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.io.IOException;
 import java.io.InputStream;
@@ -67,8 +68,10 @@ public class CustomEmotes implements IWrap {
         return false;
     }
 
+    @Nonnull
     private List<Emote> emotesPendingDeletion = new ArrayList<>();
 
+    @Nonnull
     @Override
     public WrapResult preAction(MessageReceivedEvent event) {
         logger.debug("Starting emote replacement");

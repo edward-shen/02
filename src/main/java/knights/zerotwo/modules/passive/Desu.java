@@ -6,6 +6,7 @@ import net.dv8tion.jda.core.entities.MessageChannel;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.core.requests.restaction.MessageAction;
 
+import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,11 +15,13 @@ import java.util.Random;
 @ParametersAreNonnullByDefault
 public class Desu implements IPassive {
 
+    @Nonnull
+    private static List<RandomEvent> messageList = new ArrayList<>();
+
     private interface RandomEvent {
+        @Nonnull
         MessageAction accept(MessageChannel channel);
     }
-
-    private static List<RandomEvent> messageList = new ArrayList<>();
 
     static {
         messageList.add(channel -> channel.sendMessage("です。"));

@@ -7,8 +7,6 @@ import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import org.jetbrains.annotations.Contract;
 
 import javax.annotation.ParametersAreNonnullByDefault;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Random;
 
 @ParametersAreNonnullByDefault
@@ -36,7 +34,7 @@ public class Roll implements IActive {
         Random rnd = new Random();
         int sum = 0;
 
-        List<String> diceRolls = Arrays.asList(arguments.split("\\+"));
+        String[] diceRolls = arguments.split("\\+");
 
         for (String dice : diceRolls) {
             String[] diceParams = dice.split("d");

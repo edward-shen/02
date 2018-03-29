@@ -5,6 +5,7 @@ import knights.zerotwo.Utils;
 import net.dv8tion.jda.core.entities.Message.MentionType;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
+import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.HashSet;
 import java.util.Set;
@@ -12,6 +13,7 @@ import java.util.regex.Matcher;
 
 @ParametersAreNonnullByDefault
 public class Crosspost implements IActive {
+    @Nonnull
     private static final String COMMAND_KEYWORD = "crosspost";
 
     @Override

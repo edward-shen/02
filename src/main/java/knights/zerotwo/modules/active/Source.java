@@ -5,10 +5,12 @@ import knights.zerotwo.QuoteGenerator;
 import knights.zerotwo.Utils;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
+import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 @ParametersAreNonnullByDefault
 public class Source implements IActive {
+    @Nonnull
     private QuoteGenerator quoteGen = new QuoteGenerator(this.getClass());
 
     @Override
