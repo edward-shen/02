@@ -16,7 +16,7 @@ import java.util.Random;
 public class Desu implements IPassive {
 
     @Nonnull
-    private static List<RandomEvent> messageList = new ArrayList<>();
+    private static final List<RandomEvent> messageList = new ArrayList<>();
 
     private interface RandomEvent {
         @Nonnull

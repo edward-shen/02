@@ -13,13 +13,13 @@ import java.util.regex.Pattern;
 @ParametersAreNonnullByDefault
 public class Clap implements IActive {
 
+    @Nonnull
+    private static final Pattern ascii = Pattern.compile("[a-zA-Z0-9]");
+
     @Override
     public boolean test(MessageReceivedEvent event) {
         return Utils.isCommand(event, "clap");
     }
-
-    @Nonnull
-    private static final Pattern ascii = Pattern.compile("[a-zA-Z0-9]");
 
     @Override
     public void apply(MessageReceivedEvent event, String messageContent) {

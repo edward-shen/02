@@ -12,7 +12,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 public class Bug implements IActive {
 
     @Nonnull
-    private QuoteGenerator quoteGen = new QuoteGenerator(this.getClass());
+    private final QuoteGenerator quoteGen = new QuoteGenerator(this.getClass());
 
     @Override
     public void apply(MessageReceivedEvent event, String messageContent) {

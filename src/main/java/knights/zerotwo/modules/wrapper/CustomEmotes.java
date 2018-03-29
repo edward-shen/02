@@ -69,7 +69,7 @@ public class CustomEmotes implements IWrap {
     }
 
     @Nonnull
-    private List<Emote> emotesPendingDeletion = new ArrayList<>();
+    private final List<Emote> emotesPendingDeletion = new ArrayList<>();
 
     @Nonnull
     @Override

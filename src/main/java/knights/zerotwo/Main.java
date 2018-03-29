@@ -32,7 +32,7 @@ import java.util.stream.Collectors;
 @ParametersAreNonnullByDefault
 public class Main extends ListenerAdapter {
     private static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
-    private List<IPassive> passiveModules;
+    private final List<IPassive> passiveModules;
     private List<IActive> activeModules;
     private List<IWrap> wrapperModules;
     private List<IReaction> reactionModules;

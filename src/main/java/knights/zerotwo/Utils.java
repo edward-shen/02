@@ -36,11 +36,12 @@ public class Utils {
      */
     @Contract(pure = true)
     public static String getCommandContent(String command, String toParse) {
+
         if (toParse.contains(Utils.PREFIX + command)) {
-            return toParse.trim().substring((toParse.trim().contains(" ") ? toParse.trim().indexOf(" ") : command.length()) + 1);
+            throw new IllegalArgumentException("Command is not in to parse string!");
         }
 
-        return null;
+        return toParse.trim().substring((toParse.trim().contains(" ") ? toParse.trim().indexOf(" ") : command.length()) + 1);
     }
 
     /**
