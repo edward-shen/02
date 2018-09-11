@@ -5,12 +5,14 @@ import knights.zerotwo.IActive;
 import knights.zerotwo.Utils;
 import net.dv8tion.jda.core.entities.Message.MentionType;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import org.plugface.core.annotations.Plugin;
 
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.regex.Pattern;
 
 @ParametersAreNonnullByDefault
+@Plugin("Clap")
 public class Clap implements IActive {
 
     @Nonnull
@@ -35,17 +37,20 @@ public class Clap implements IActive {
         String[] args = command.replaceAll("\\s+", " ").split(" ");
         String emote = args[0];
         int startIndex = 1;
+        StringBuilder output = new StringBuilder();
+        output.append(args[startIndex]);
+
+        if (args.length < startIndex + 2) {
+            event.getChannel().sendMessage("Baka, you can't clap a single word!").queue();
+            return;
+        }
+
         if ((EmojiParser.extractEmojis(emote).isEmpty() || ascii.matcher(emote).find())
                 && !MentionType.EMOTE.getPattern().matcher(emote).matches()) {
             startIndex = 0;
             emote = ":clap:";
         }
-        if (args.length < startIndex + 2) {
-            event.getChannel().sendMessage("Baka, you can't clap a single word!").queue();
-            return;
-        }
-        StringBuilder output = new StringBuilder();
-        output.append(args[startIndex]);
+
         for (int i = startIndex + 1; i < args.length; i++) {
             output.append(' ');
             output.append(emote);
